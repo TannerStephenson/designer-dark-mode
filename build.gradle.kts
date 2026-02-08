@@ -112,5 +112,5 @@ ignitionModule {
      * Optional unsigned modl settings. If true, modl signing will be skipped. This is not for production and should
      * be used merely for development testing
      */
-    skipModlSigning.set(false)
+    skipModlSigning.set(true)
 }
