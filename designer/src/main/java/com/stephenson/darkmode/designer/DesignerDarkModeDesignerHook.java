@@ -12,11 +12,11 @@ import java.util.List;
 
 public class DesignerDarkModeDesignerHook extends AbstractDesignerModuleHook {
 
-    private boolean darkModeEnabled = false;
 
     @Override
     public void startup(DesignerContext context, LicenseState activationState) {
         DarkModeManager.getInstance().recordOriginalLookAndFeel();
+        System.out.println("DesignerDarkModeDesignerHook started.");
     }
 
 
@@ -26,9 +26,7 @@ public class DesignerDarkModeDesignerHook extends AbstractDesignerModuleHook {
         AbstractAction toggleAction = new AbstractAction("Dark Mode") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                darkModeEnabled = !darkModeEnabled;
-                System.out.println("Dark Mode toggled: " + darkModeEnabled);
-
+                DarkModeManager.getInstance().toggleDarkMode();  // APPLY Dark Mode
             }
         };
 
@@ -37,7 +35,6 @@ public class DesignerDarkModeDesignerHook extends AbstractDesignerModuleHook {
         toolbar.setOrientation(SwingConstants.HORIZONTAL);  // horizontal toolbar
         toolbar.add(toggleAction);
 
-        // Return the list of toolbars your module contributes
         return Collections.singletonList(toolbar);
     }
 }
