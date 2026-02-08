@@ -13,4 +13,5 @@ dependencies {
     compileOnly("com.inductiveautomation.ignitionsdk:ignition-common:${rootProject.extra["sdk_version"]}")
 
     // add designer scoped dependencies here
+    implementation("com.formdev:flatlaf:3.2")
 }

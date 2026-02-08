@@ -15,6 +15,12 @@ public class DesignerDarkModeDesignerHook extends AbstractDesignerModuleHook {
     private boolean darkModeEnabled = false;
 
     @Override
+    public void startup(DesignerContext context, LicenseState activationState) {
+        DarkModeManager.getInstance().recordOriginalLookAndFeel();
+    }
+
+
+    @Override
     public List<CommandBar> getModuleToolbars() {
 
         AbstractAction toggleAction = new AbstractAction("Dark Mode") {
@@ -22,6 +28,7 @@ public class DesignerDarkModeDesignerHook extends AbstractDesignerModuleHook {
             public void actionPerformed(ActionEvent e) {
                 darkModeEnabled = !darkModeEnabled;
                 System.out.println("Dark Mode toggled: " + darkModeEnabled);
+
             }
         };
 

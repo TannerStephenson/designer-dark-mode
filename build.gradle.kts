@@ -87,6 +87,8 @@ ignitionModule {
      */
     moduleDependencySpecs { }
 
+
+
     /*
      * Map of fully qualified hook class to the shorthand scope.  Only one scope may apply to a class, and each scope
      * must have no more than single class registered.  You may omit scope registrations if they do not apply.

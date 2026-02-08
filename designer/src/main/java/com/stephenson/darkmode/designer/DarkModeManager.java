@@ -1,27 +1,60 @@
 package com.stephenson.darkmode.designer;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class DarkModeManager {
 
-    private static boolean darkModeEnabled = false;
+    private static final DarkModeManager INSTANCE = new DarkModeManager();
 
-    public static boolean isDarkMode() {
-        return darkModeEnabled;
+    private boolean darkModeEnabled = false;
+
+    // This stores Ignition Designer’s actual default LAF
+    private LookAndFeel originalLaf;
+
+    private DarkModeManager() {}
+
+    public static DarkModeManager getInstance() {
+        return INSTANCE;
     }
 
-    public static void toggleDarkMode() {
-        darkModeEnabled = !darkModeEnabled;
-        applyThemeToAll();
-    }
-
-    private static void applyThemeToAll() {
-        // Apply dark/light theme to all registered module components
-        List<JComponent> components = DarkModePainter.getAllRegisteredComponents();
-        for (JComponent comp : components) {
-            DarkModePainter.paintComponent(comp, darkModeEnabled);
+    public void recordOriginalLookAndFeel() {
+        if (originalLaf == null) {
+            originalLaf = UIManager.getLookAndFeel();
+            System.out.println("Captured original Designer LookAndFeel: " + originalLaf.getName());
         }
+    }
+
+    public void toggleDarkMode() {
+        darkModeEnabled = !darkModeEnabled;
+
+        try {
+            if (darkModeEnabled) {
+                FlatDarkLaf.setup();
+                System.out.println("Applied FlatDarkLaf");
+            } else {
+                if (originalLaf != null) {
+                    UIManager.setLookAndFeel(originalLaf);
+                    System.out.println("Restored original Designer LookAndFeel");
+                }
+            }
+
+            // Apply theme to all open windows
+            for (Window w : Window.getWindows()) {
+                SwingUtilities.updateComponentTreeUI(w);
+                w.repaint();
+            }
+
+            System.out.println("Dark Mode toggled: " + darkModeEnabled);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isDarkModeEnabled() {
+        return darkModeEnabled;
     }
 }
